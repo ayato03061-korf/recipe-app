@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="冷蔵庫にある食材から今日の献立を探せる、共有用のレシピ集。収録レシピに加えて、クックパッドやクラシルなど外部のレシピサイトでも同じ食材・料理名で検索できます。単一HTMLファイルなのでGitHub Pagesでそのまま公開できます。">
+    <link rel="icon" href="data:,">
+    <title>レシピを考える（共有版）</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2rem; }
+    </style>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --panel: #f4f8f3;
+        --panel-2: #eef3ec;
+        --ink: #22302a;
+        --ink-soft: #55645c;
+        --line: #dce5da;
+        --accent: #d9481c;
+        --accent-ink: #b93a14;
+        --accent-soft: #fdeee7;
+        --green: #2e7d4f;
+        --green-soft: #e6f2e9;
+        --gold: #a86e00;
+        --gold-soft: #fdf3dd;
+        --blue: #2563a8;
+        --blue-soft: #e8f1fa;
+        --shadow: 0 2px 10px rgba(34, 48, 42, .08);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141a16;
+          --panel: #1c241e;
+          --panel-2: #232d26;
+          --ink: #eef3ee;
+          --ink-soft: #a9b8ae;
+          --line: #33413a;
+          --accent: #ff8a5c;
+          --accent-ink: #ffa582;
+          --accent-soft: #3a241a;
+          --green: #7bc796;
+          --green-soft: #1e3325;
+          --gold: #e8b84b;
+          --gold-soft: #38300f;
+          --blue: #7db3e8;
+          --blue-soft: #1d2f42;
+          --shadow: 0 2px 10px rgba(0, 0, 0, .35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px 64px; }
+      h1, h2, h3, .maru { font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif; }
+
+      /* ---------- intro ---------- */
+      .intro { padding: 28px 0 6px; }
+      .intro h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 6px; letter-spacing: .02em; }
+      .intro h1 .accent { color: var(--accent); }
+      .intro p { margin: 0; color: var(--ink-soft); font-size: .95rem; max-width: 40em; }
+      .intro-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        min-height: 44px; padding: 8px 18px;
+        border-radius: 999px; border: 1px solid var(--line);
+        background: var(--panel); color: var(--ink);
+        font: inherit; font-weight: 700; font-size: .92rem;
+        cursor: pointer; text-decoration: none;
+      }
+      .btn:hover { border-color: var(--green); }
+      .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      @media (prefers-color-scheme: dark) { .btn.primary { color: #1c1005; } }
+      .btn.primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+      .btn svg { width: 18px; height: 18px; flex: none; }
+
+      /* ---------- filter panel ---------- */
+      .panel {
+        margin-top: 22px; background: var(--panel);
+        border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 18px;
+      }
+      .panel h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 900; }
+      .panel .hint { margin: 0 0 12px; font-size: .83rem; color: var(--ink-soft); }
+      .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .search-box { position: relative; flex: 1 1 240px; }
+      .search-box svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--ink-soft); pointer-events: none; }
+      .search-box input {
+        width: 100%; min-height: 44px; padding: 8px 12px 8px 38px;
+        border-radius: 10px; border: 1px solid var(--line);
+        background: var(--bg); color: var(--ink); font: inherit; font-size: .95rem;
+      }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+      .chip {
+        min-height: 38px; padding: 5px 14px; border-radius: 999px;
+        border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+        font: inherit; font-size: .88rem; font-weight: 500; cursor: pointer;
+      }
+      .chip:hover { border-color: var(--green); }
+      .chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; font-weight: 700; }
+      @media (prefers-color-scheme: dark) { .chip[aria-pressed="true"] { color: #0e1a11; } }
+      .chip.cond[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+      @media (prefers-color-scheme: dark) { .chip.cond[aria-pressed="true"] { color: #1c1005; } }
+      .cond-label { margin: 16px 0 0; font-size: .83rem; font-weight: 700; color: var(--ink-soft); }
+
+      /* ---------- external recipe sites ---------- */
+      .web-panel { margin-top: 16px; background: var(--blue-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+      .web-panel h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 900; }
+      .web-panel .hint { margin: 0 0 10px; font-size: .83rem; color: var(--ink-soft); }
+      .web-kw { margin: 0 0 12px; font-size: .9rem; }
+      .web-kw b { color: var(--blue); }
+      .site-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+      .site-link {
+        display: flex; align-items: center; gap: 10px; min-height: 52px;
+        background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+        padding: 10px 12px; text-decoration: none; color: var(--ink);
+      }
+      .site-link:hover { border-color: var(--blue); }
+      .site-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .site-link .s-name { display: block; font-weight: 700; font-size: .92rem; line-height: 1.35; }
+      .site-link .s-note { display: block; font-size: .74rem; color: var(--ink-soft); line-height: 1.45; }
+      .site-link svg { width: 16px; height: 16px; flex: none; margin-left: auto; color: var(--blue); }
+      .empty .site-links { margin-top: 14px; text-align: left; }
+      .empty .ext-head { margin: 18px 0 0; font-weight: 700; color: var(--ink); font-size: .92rem; }
+      .dlg-sites { display: flex; flex-wrap: wrap; gap: 8px; }
+      .dlg-sites a {
+        display: inline-flex; align-items: center; gap: 6px; min-height: 38px;
+        padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line);
+        background: var(--panel); color: var(--ink); font-size: .88rem; font-weight: 700; text-decoration: none;
+      }
+      .dlg-sites a:hover { border-color: var(--blue); }
+      .dlg-sites a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .dlg-sites svg { width: 13px; height: 13px; color: var(--blue); }
+
+      /* ---------- category tabs ---------- */
+      .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px; border-bottom: 2px solid var(--line); }
+      .tab {
+        min-height: 44px; padding: 8px 16px; border: none; background: none;
+        font: inherit; font-size: .98rem; font-weight: 700; color: var(--ink-soft);
+        cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px;
+      }
+      .tab[aria-selected="true"] { color: var(--accent-ink); border-bottom-color: var(--accent); }
+      .result-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 16px 2px 12px; }
+      .result-line .count { font-weight: 700; font-size: .95rem; }
+      .result-line .count b { color: var(--accent-ink); font-size: 1.15rem; }
+      .clear-btn { background: none; border: none; color: var(--blue); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; min-height: 36px; padding: 4px 8px; }
+
+      /* ---------- recipe cards ---------- */
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+      .card {
+        background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+        overflow: hidden; cursor: pointer; text-align: left; font: inherit; color: inherit;
+        padding: 0; width: 100%; box-shadow: var(--shadow);
+        display: flex; flex-direction: column;
+      }
+      .card:hover { border-color: var(--green); }
+      .card:focus-visible, .btn:focus-visible, .chip:focus-visible, .tab:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .card-art { height: 92px; display: flex; align-items: center; justify-content: center; position: relative; }
+      .card-art svg { width: 52px; height: 52px; }
+      .art-main { background: var(--accent-soft); color: var(--accent); }
+      .art-side { background: var(--green-soft); color: var(--green); }
+      .art-soup { background: var(--gold-soft); color: var(--gold); }
+      .art-rice { background: var(--blue-soft); color: var(--blue); }
+      .match-badge {
+        position: absolute; top: 8px; right: 8px;
+        background: var(--green); color: #fff; font-size: .72rem; font-weight: 700;
+        padding: 2px 9px; border-radius: 999px;
+      }
+      @media (prefers-color-scheme: dark) { .match-badge { color: #0e1a11; } }
+      .card-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+      .card h3 { margin: 0; font-size: 1.02rem; font-weight: 900; line-height: 1.4; }
+      .card .desc { margin: 0; font-size: .82rem; color: var(--ink-soft); line-height: 1.55; }
+      .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+      .meta span { font-size: .74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--panel-2); color: var(--ink-soft); }
+      .meta span.protein { background: var(--accent-soft); color: var(--accent-ink); }
+      .meta span.keep { background: var(--green-soft); color: var(--green); }
+      .empty { text-align: center; padding: 44px 16px; color: var(--ink-soft); border: 1px dashed var(--line); border-radius: var(--radius); }
+      .empty p { margin: 0 0 6px; font-weight: 700; color: var(--ink); }
+
+      /* ---------- dialog ---------- */
+      dialog {
+        border: 1px solid var(--line); border-radius: 18px; padding: 0;
+        background: var(--bg); color: var(--ink);
+        width: min(620px, calc(100vw - 24px)); max-height: 88vh;
+      }
+      dialog::backdrop { background: rgba(10, 16, 12, .55); }
+      .dlg-head { padding: 20px 22px 0; display: flex; gap: 12px; align-items: flex-start; }
+      .dlg-head h3 { margin: 0; font-size: 1.3rem; font-weight: 900; line-height: 1.4; flex: 1; }
+      .dlg-close { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-size: 1.1rem; cursor: pointer; line-height: 1; }
+      .dlg-body { padding: 12px 22px 24px; overflow-y: auto; }
+      .dlg-body .desc { color: var(--ink-soft); font-size: .9rem; margin: 0 0 12px; }
+      .dlg-body h4 { font-family: "Zen Maru Gothic", sans-serif; margin: 18px 0 8px; font-size: 1rem; }
+      .ing-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+      .ing-list li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 2px; border-bottom: 1px solid var(--line); font-size: .92rem; }
+      .ing-list li b { font-weight: 500; text-align: right; white-space: nowrap; }
+      .steps { margin: 0; padding-left: 1.4em; }
+      .steps li { margin-bottom: 8px; font-size: .93rem; }
+      .steps li::marker { color: var(--accent); font-weight: 700; }
+      .servings { font-size: .8rem; color: var(--ink-soft); }
+
+      /* ---------- github guide ---------- */
+      .guide { margin-top: 52px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+      .guide h2 { margin: 0 0 6px; font-size: 1.25rem; font-weight: 900; }
+      .guide > p { margin: 0 0 14px; color: var(--ink-soft); font-size: .92rem; max-width: 44em; }
+      .guide ol { margin: 0 0 18px; padding-left: 1.5em; }
+      .guide ol li { margin-bottom: 10px; font-size: .93rem; }
+      .guide ol li::marker { color: var(--accent); font-weight: 900; }
+      .guide code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; font-size: .86em; word-break: break-all; }
+      .guide .dl-row { display: flex; flex-wrap: wrap; gap: 10px; }
+      footer { margin-top: 40px; font-size: .8rem; color: var(--ink-soft); text-align: center; }
+      .toast {
+        position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(20px);
+        background: var(--ink); color: var(--bg); padding: 10px 20px; border-radius: 999px;
+        font-size: .88rem; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s;
+        max-width: calc(100vw - 32px); text-align: center; z-index: 50;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      @media (max-width: 560px) {
+        .intro h1 { font-size: 1.45rem; }
+        .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .card-art { height: 70px; }
+        .card-art svg { width: 40px; height: 40px; }
+        .panel, .guide, .web-panel { padding: 16px; }
+        .site-links { grid-template-columns: 1fr 1fr; }
+        .site-link .s-note { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-main" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M30 6c6 1 10 6 10 12 0 7-6 12-13 12-3 0-6-1-8-3L12 20c-2-3-1-7 2-10C17 7 24 5 30 6Z"></path>
+          <path d="M19 27l-4 4c-2 2-5 2-6 0-1-1-1-3 1-5l4-3"></path>
+          <path d="M10 26l-3 3M15 31l-3 3"></path>
+        </g>
+      </symbol>
+      <symbol id="i-side" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 42C24 30 24 18 30 6c8 2 12 8 12 15 0 10-8 17-18 21Z"></path>
+          <path d="M24 42C24 32 20 24 10 20c-4 8 1 17 14 22Z"></path>
+          <path d="M24 42V26"></path>
+        </g>
+      </symbol>
+      <symbol id="i-soup" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 22h36c0 9-7 16-16 16h-4C13 38 6 31 6 22Z"></path>
+          <path d="M4 22h40"></path>
+          <path d="M17 14c0-3 3-3 3-6M27 14c0-3 3-3 3-6"></path>
+          <path d="M14 44h20"></path>
+        </g>
+      </symbol>
+      <symbol id="i-rice" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 24h32c0 8-6 14-14 14h-4C14 38 8 32 8 24Z"></path>
+          <path d="M12 24c1-6 6-10 12-10s11 4 12 10"></path>
+          <path d="M30 6l8 10M38 4L42 14"></path>
+          <path d="M16 44h16"></path>
+        </g>
+      </symbol>
+      <symbol id="i-dice" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+          <circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"></circle>
+          <circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"></circle>
+          <circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"></circle>
+          <circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"></circle>
+        </g>
+      </symbol>
+      <symbol id="i-dl" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v11M7 11l5 5 5-5M4 20h16"></path>
+        </g>
+      </symbol>
+      <symbol id="i-ext" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 4h6v6M20 4l-9 9M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"></path>
+        </g>
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.8-3.8"></path>
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="wrap">
+      <section class="intro">
+        <h1>冷蔵庫の食材から、<span class="accent">今日の一品</span>を決めよう</h1>
+        <p>家にある食材を選ぶと、その食材で作れるレシピが見つかります。全24品、高タンパクや時短などの条件でも絞り込めます。さらに、選んだ食材や料理名のままクックパッドやクラシルなど外部のレシピサイトでも検索できるので、このアプリにないレシピも探せます。迷ったときは「おまかせ」ボタンで1品決めることもできます。</p>
+        <div class="intro-actions">
+          <button class="btn primary" id="randomBtn" type="button"><svg><use href="#i-dice"></use></svg>おまかせで1品決める</button>
+          <button class="btn" id="dlTopBtn" type="button"><svg><use href="#i-dl"></use></svg>index.htmlをダウンロード</button>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="レシピを探す">
+        <h2>食材で探す</h2>
+        <p class="hint">家にある食材をタップすると、その食材を使うレシピが上に来ます。複数選ぶと、多く一致する順に並びます。</p>
+        <div class="search-row">
+          <div class="search-box">
+            <svg><use href="#i-search"></use></svg>
+            <input type="search" id="searchInput" placeholder="料理名・食材で検索（例：鮭、味噌汁）" aria-label="料理名・食材で検索">
+          </div>
+        </div>
+        <div class="chips" id="ingChips" role="group" aria-label="食材を選ぶ"></div>
+        <p class="cond-label">条件で絞る</p>
+        <div class="chips" id="condChips" role="group" aria-label="条件で絞る">
+          <button class="chip cond" type="button" data-cond="protein" aria-pressed="false">高タンパク（25g以上）</button>
+          <button class="chip cond" type="button" data-cond="quick" aria-pressed="false">15分以内</button>
+          <button class="chip cond" type="button" data-cond="keep" aria-pressed="false">作り置きOK</button>
+        </div>
+      </section>
+
+      <section class="web-panel" aria-label="外部のレシピサイトで探す">
+        <h2>レシピサイトでも探す</h2>
+        <p class="hint">このアプリにないレシピは、外部のレシピサイトでも探せます。選んだ食材と検索ワードがそのまま各サイトの検索キーワードになります。リンクを押すと、検索結果が新しいタブで開きます。</p>
+        <p class="web-kw" id="webKw"></p>
+        <div class="site-links" id="webLinks"></div>
+      </section>
+
+      <div class="tabs" role="tablist" aria-label="カテゴリ" id="catTabs">
+        <button class="tab" role="tab" type="button" data-cat="all" aria-selected="true">すべて</button>
+        <button class="tab" role="tab" type="button" data-cat="主菜" aria-selected="false">主菜</button>
+        <button class="tab" role="tab" type="button" data-cat="副菜" aria-selected="false">副菜</button>
+        <button class="tab" role="tab" type="button" data-cat="汁物" aria-selected="false">汁物</button>
+        <button class="tab" role="tab" type="button" data-cat="ごはんもの" aria-selected="false">ごはんもの</button>
+      </div>
+
+      <div class="result-line">
+        <span class="count" id="resultCount"></span>
+        <button class="clear-btn" id="clearBtn" type="button">条件をすべてクリア</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="emptyState" hidden="">
+        <p>条件に合うレシピが見つかりませんでした</p>
+        食材や条件を減らして、もう一度探してみてください。
+        <p class="ext-head">同じキーワードで、外部のレシピサイトでも探せます</p>
+        <div class="site-links" id="emptyLinks"></div>
+      </div>
+
+      <section class="guide" id="github">
+        <h2>このページをGitHubで公開する手順</h2>
+        <p>このページは、画像もプログラムもすべて1つのHTMLファイルに収まっています。下のボタンで <code>index.html</code> をダウンロードしてGitHubに置けば、GitHub Pagesで誰でも開けるURLが発行されます。ビルド作業は不要です。</p>
+        <ol>
+          <li>下のボタンから <code>index.html</code> をダウンロードする（ついでに <code>README.md</code> も用意しています）</li>
+          <li>GitHubで新しいリポジトリを作る（公開範囲は Public を選ぶ）</li>
+          <li>リポジトリの画面で「Add file」→「Upload files」を選び、<code>index.html</code> をアップロードしてコミットする</li>
+          <li>リポジトリの「Settings」→「Pages」を開き、Branch で <code>main</code> ／ <code>/(root)</code> を選んで「Save」</li>
+          <li>数分待つと <code>https://（ユーザー名）.github.io/（リポジトリ名）/</code> で公開されます</li>
+        </ol>
+        <div class="dl-row">
+          <button class="btn primary" id="dlHtmlBtn" type="button"><svg><use href="#i-dl"></use></svg>index.html をダウンロード</button>
+          <button class="btn" id="dlReadmeBtn" type="button"><svg><use href="#i-dl"></use></svg>README.md をダウンロード</button>
+        </div>
+      </section>
+
+      <footer>レシピはすべて2人分です。タンパク質・カロリーは1人分の目安です。</footer>
+    </div>
+
+    <dialog id="recipeDialog" aria-labelledby="dlgTitle">
+      <div class="dlg-head">
+        <h3 id="dlgTitle"></h3>
+        <button class="dlg-close" id="dlgClose" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div class="dlg-body" id="dlgBody"></div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      // GitHub配布用: 画面が書き換わる前の、このページ自身のHTMLを控えておく
+      var PRISTINE_HTML = "<!doctype html>\n" + document.documentElement.outerHTML;
+
+      var INGREDIENTS = ["鶏むね肉","鶏もも肉","豚肉","牛肉","ひき肉","鮭","サバ","ツナ缶","卵","豆腐","厚揚げ","玉ねぎ","キャベツ","にんじん","じゃがいも","ごぼう","ほうれん草","ブロッコリー","ピーマン","なす","トマト","もやし","きのこ","わかめ"];
+
+      var RECIPES = [
+        { name:"鶏むね肉の照り焼きチキン", cat:"主菜", time:15, protein:34, kcal:330, keep:false,
