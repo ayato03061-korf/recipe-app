@@ -34,7 +34,124 @@
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #141a16;
+
+          steps:["ピーマンは細切りにし、油を切ったツナと耐熱ボウルに入れる。","ふんわりラップをして電子レンジ600Wで2分加熱する。","鶏ガラスープの素・ごま油・塩こしょうを和え、白ごまをふる。"] },
+        { name:"きんぴらごぼう", cat:"副菜", time:15, protein:2, kcal:110, keep:true,
+          desc:"甘辛味で作り置きの定番。冷蔵で3〜4日持つので、常備菜にぴったりです。",
+          keys:["ごぼう","にんじん"],
+          ings:[["ごぼう","1本"],["にんじん","1/2本"],["ごま油","大さじ1"],["酒","大さじ2"],["しょうゆ","大さじ2"],["砂糖","大さじ1"],["みりん","大さじ1"],["白ごま","適量"],["七味唐辛子","お好みで"]],
+          steps:["ごぼうはささがきにして水にさらし、にんじんは細切りにする。","鍋にごま油を熱し、ごぼうとにんじんを炒める。","酒・砂糖・しょうゆ・みりんを加え、汁気がなくなるまで炒め煮にする。白ごまをふる。"] },
+        { name:"ポテトサラダ", cat:"副菜", time:20, protein:5, kcal:230, keep:true,
+          desc:"じゃがいもは熱いうちに下味をつけるのがコツ。半熟気味の食感を残すとほくほくに。",
+          keys:["じゃがいも","卵"],
+          ings:[["じゃがいも","3個"],["卵","1個"],["にんじん","1/4本"],["きゅうり","1/2本"],["ハム","2枚"],["酢","小さじ1"],["砂糖","小さじ1/2"],["マヨネーズ","大さじ4"],["塩こしょう","少々"]],
+          steps:["じゃがいもは皮付きでゆで、熱いうちに皮をむいて粗くつぶし、酢・砂糖・塩を混ぜる。","にんじんは薄切りにしてゆで、きゅうりは輪切りにして塩もみし、水気を絞る。ハムは短冊切りにする。卵はゆで卵にする。","冷めたじゃがいもに具材とゆで卵、マヨネーズを加えて和え、塩こしょうで調える。"] },
+        { name:"もやしナムル", cat:"副菜", time:5, protein:3, kcal:60, keep:true,
+          desc:"ゆでて和えるだけの5分副菜。もやしはゆですぎず、シャキッと仕上げるのがポイント。",
+          keys:["もやし"],
+          ings:[["もやし","1袋（200g）"],["ごま油","大さじ1"],["鶏ガラスープの素","小さじ1"],["塩","小さじ1/4"],["白ごま","適量"],["にんにく（すりおろし）","少々"]],
+          steps:["もやしは熱湯で1分ゆで、ざるに上げて水気を切る。","温かいうちにごま油・スープの素・塩・にんにくを和え、白ごまをふる。"] },
+        { name:"なすの煮びたし", cat:"副菜", time:15, protein:2, kcal:90, keep:true,
+          desc:"揚げずに作る煮びたし。冷やして食べると味が染みて、作り置きにも向きます。",
+          keys:["なす"],
+          ings:[["なす","3本"],["だし汁","200ml"],["しょうゆ","大さじ2"],["みりん","大さじ2"],["しょうが（すりおろし）","1かけ分"],["サラダ油","大さじ2"],["かつお節","適量"]],
+          steps:["なすは縦半分に切り、皮目に斜めの切り込みを入れて一口大に切る。","フライパンに油を熱し、なすを皮目から焼いて全体に焼き色をつける。","だし汁・しょうゆ・みりんを加えて5分煮る。","器に盛ってしょうがとかつお節をのせる。冷蔵で冷やしてもおいしい。"] },
+
+        { name:"豚汁", cat:"汁物", time:25, protein:11, kcal:190, keep:true,
+          desc:"根菜たっぷりで、これ一杯でおかずになる味噌汁。具だくさんにして栄養バランスを。",
+          keys:["豚肉","じゃがいも","にんじん","ごぼう","玉ねぎ","豆腐"],
+          ings:[["豚バラ薄切り肉","100g"],["大根","5cm"],["にんじん","1/2本"],["ごぼう","1/2本"],["じゃがいも","1個"],["玉ねぎ","1/2個"],["木綿豆腐","1/2丁"],["だし汁","700ml"],["味噌","大さじ3"],["ごま油","小さじ2"],["青ねぎ","適量"]],
+          steps:["野菜は一口大に切り、ごぼうはささがきにして水にさらす。豆腐はさいの目切りにする。","鍋にごま油を熱し、豚肉と根菜を炒める。","だし汁を加えて15分煮て、豆腐を加える。","火を弱めて味噌を溶き入れ、青ねぎを散らす。"] },
+        { name:"豆腐とわかめの味噌汁", cat:"汁物", time:10, protein:5, kcal:60, keep:false,
+          desc:"毎日の食卓の基本。味噌は沸騰させず、火を止める直前に入れると香りが残ります。",
+          keys:["豆腐","わかめ"],
+          ings:[["絹ごし豆腐","1/2丁（150g）"],["乾燥わかめ","大さじ1"],["だし汁","400ml"],["味噌","大さじ2"],["長ねぎ","適量"]],
+          steps:["わかめは水で戻す。豆腐はさいの目切りにする。","鍋にだし汁を煮立て、豆腐とわかめを加えてひと煮立ちさせる。","火を止めて味噌を溶き入れ、刻んだ長ねぎを散らす。"] },
+        { name:"中華風たまごスープ", cat:"汁物", time:10, protein:6, kcal:70, keep:false,
+          desc:"ふんわり卵が広がるやさしいスープ。卵は沸騰したところに細く流し入れるのがコツ。",
+          keys:["卵","きのこ"],
+          ings:[["卵","2個"],["えのき","1/2袋"],["水","500ml"],["鶏ガラスープの素","大さじ1"],["しょうゆ","小さじ1"],["塩こしょう","少々"],["水溶き片栗粉","適量"],["ごま油","小さじ1"]],
+          steps:["えのきは半分に切る。鍋に水とスープの素を入れて煮立てる。","えのきを加え、水溶き片栗粉で軽くとろみをつける。","沸騰したところに溶き卵を細く流し入れ、ふんわり広がったら火を止める。","しょうゆ・塩こしょう・ごま油で味を調える。"] },
+
+        { name:"親子丼", cat:"ごはんもの", time:15, protein:28, kcal:560, keep:false,
+          desc:"卵は2回に分けて入れると、とろっとした仕上がりに。だしの効いた甘辛味です。",
+          keys:["鶏もも肉","卵","玉ねぎ"],
+          ings:[["鶏もも肉","1枚（250g）"],["玉ねぎ","1/2個"],["卵","3個"],["ごはん","2杯分"],["だし汁","150ml"],["しょうゆ","大さじ2と1/2"],["みりん","大さじ2"],["砂糖","大さじ1"],["三つ葉または青ねぎ","適量"]],
+          steps:["鶏肉は一口大、玉ねぎは薄切りにする。卵は軽く溶く。","小鍋にだし汁と調味料、玉ねぎを入れて煮立て、鶏肉を加えて5分煮る。","溶き卵の2/3を回し入れ、蓋をして弱火で1分。残りの卵を加えて半熟で火を止める。","ごはんにのせ、三つ葉を散らす。"] },
+        { name:"牛丼", cat:"ごはんもの", time:15, protein:24, kcal:580, keep:false,
+          desc:"玉ねぎの甘みが決め手の定番丼。牛肉は煮すぎると硬くなるので、手早く仕上げて。",
+          keys:["牛肉","玉ねぎ"],
+          ings:[["牛薄切り肉","250g"],["玉ねぎ","1個"],["ごはん","2杯分"],["だし汁","200ml"],["しょうゆ","大さじ3"],["酒","大さじ2"],["みりん","大さじ2"],["砂糖","大さじ1"],["しょうが（すりおろし）","1かけ分"],["紅しょうが","お好みで"]],
+          steps:["玉ねぎは薄切りにする。","鍋にだし汁と調味料を煮立て、玉ねぎを加えて5分煮る。","牛肉としょうがを加え、アクを取りながら3分煮る。","ごはんにのせ、お好みで紅しょうがを添える。"] },
+        { name:"卵チャーハン", cat:"ごはんもの", time:10, protein:13, kcal:520, keep:false,
+          desc:"ごはんと卵を先に混ぜる「卵かけごはん方式」で、パラパラに仕上がります。",
+          keys:["卵","ひき肉"],
+          ings:[["温かいごはん","2杯分（約300g）"],["卵","2個"],["豚ひき肉","80g"],["長ねぎ","1/2本"],["鶏ガラスープの素","小さじ2"],["しょうゆ","小さじ2"],["塩こしょう","少々"],["ごま油","大さじ1"]],
+          steps:["ボウルでごはんと溶き卵をよく混ぜておく。長ねぎはみじん切りにする。","フライパンにごま油を強火で熱し、ひき肉を炒める。","卵ごはんを加え、ほぐしながら炒める。","スープの素・塩こしょう・長ねぎを加え、最後にしょうゆを鍋肌から回し入れる。"] }
+      ];
+
+      var CAT_ART = { "主菜": ["i-main", "art-main"], "副菜": ["i-side", "art-side"], "汁物": ["i-soup", "art-soup"], "ごはんもの": ["i-rice", "art-rice"] };
+
+      // 外部のレシピサイト。各サイトの検索URLにキーワードを引き継ぐ
+      var SITES = [
+        { name: "クックパッド", note: "みんなの投稿レシピが豊富",
+          url: function (q) { return q ? "https://cookpad.com/jp/search/" + encodeURIComponent(q) : "https://cookpad.com/jp/"; } },
+        { name: "クラシル", note: "動画で作り方がわかる",
+          url: function (q) { return q ? "https://www.kurashiru.com/search?query=" + encodeURIComponent(q) : "https://www.kurashiru.com/"; } },
+        { name: "楽天レシピ", note: "人気順で探せる投稿レシピ",
+          url: function (q) { return q ? "https://recipe.rakuten.co.jp/search/" + encodeURIComponent(q) + "/" : "https://recipe.rakuten.co.jp/"; } },
+        { name: "デリッシュキッチン", note: "管理栄養士監修の動画レシピ",
+          url: function (q) { return q ? "https://delishkitchen.tv/search?q=" + encodeURIComponent(q) : "https://delishkitchen.tv/"; } },
+        { name: "みんなのきょうの料理", note: "NHK「きょうの料理」のレシピ",
+          url: function (q) { return q ? "https://www.kyounoryouri.jp/search/recipe?keyword=" + encodeURIComponent(q) : "https://www.kyounoryouri.jp/recipe/"; } }
+      ];
+
+      var state = { ings: {}, conds: {}, cat: "all", query: "" };
+
+      var grid = document.getElementById("grid");
+      var emptyState = document.getElementById("emptyState");
+      var resultCount = document.getElementById("resultCount");
+      var dialog = document.getElementById("recipeDialog");
+
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      function selectedIngs() {
+        return INGREDIENTS.filter(function (i) { return state.ings[i]; });
+      }
+
+      // 外部サイトへ渡す検索キーワード（選んだ食材＋検索ワード）
+      function webQuery() {
+        var parts = selectedIngs();
+        var q = state.query.trim();
+        if (q) parts.push(q);
+        return parts.join(" ");
+      }
+
+      function siteLinksHTML(q) {
+        return SITES.map(function (s) {
+          return '<a class="site-link" href="' + esc(s.url(q)) + '" target="_blank" rel="noopener noreferrer">' +
+            '<span><span class="s-name">' + esc(s.name) + '</span>' +
+            '<span class="s-note">' + esc(s.note) + '</span></span>' +
+            '<svg aria-hidden="true"><use href="#i-ext"/></svg></a>';
+        }).join("");
+      }
+
+      function dlgLinksHTML(q) {
+        return SITES.map(function (s) {
+          return '<a href="' + esc(s.url(q)) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) +
+            '<svg aria-hidden="true"><use href="#i-ext"/></svg></a>';
+        }).join("");
+      }
+
+      function renderWeb() {
+        var q = webQuery();
+        var kw = document.getElementById("webKw");
+        kw.innerHTML = q
+          ? 'いまのキーワード：<b>' + esc(q.split(" ").join("・")) + '</b>'          --bg: #141a16;
           --panel: #1c241e;
           --panel-2: #232d26;
           --ink: #eef3ee;
