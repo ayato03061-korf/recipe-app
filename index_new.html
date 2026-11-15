@@ -101,6 +101,193 @@
         border-radius: 10px; border: 1px solid var(--line);
         background: var(--bg); color: var(--ink); font: inherit; font-size: .95rem;
       }
+      .ing-list li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 2px; border-bottom: 1px solid var(--line); font-size: .92rem; }
+      .ing-list li b { font-weight: 500; text-align: right; white-space: nowrap; }
+      .steps { margin: 0; padding-left: 1.4em; }
+      .steps li { margin-bottom: 8px; font-size: .93rem; }
+      .steps li::marker { color: var(--accent); font-weight: 700; }
+      .servings { font-size: .8rem; color: var(--ink-soft); }
+
+      /* ---------- github guide ---------- */
+      .guide { margin-top: 52px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+      .guide h2 { margin: 0 0 6px; font-size: 1.25rem; font-weight: 900; }
+      .guide > p { margin: 0 0 14px; color: var(--ink-soft); font-size: .92rem; max-width: 44em; }
+      .guide ol { margin: 0 0 18px; padding-left: 1.5em; }
+      .guide ol li { margin-bottom: 10px; font-size: .93rem; }
+      .guide ol li::marker { color: var(--accent); font-weight: 900; }
+      .guide code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; font-size: .86em; word-break: break-all; }
+      .guide .dl-row { display: flex; flex-wrap: wrap; gap: 10px; }
+      footer { margin-top: 40px; font-size: .8rem; color: var(--ink-soft); text-align: center; }
+      .toast {
+        position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(20px);
+        background: var(--ink); color: var(--bg); padding: 10px 20px; border-radius: 999px;
+        font-size: .88rem; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s;
+        max-width: calc(100vw - 32px); text-align: center; z-index: 50;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      @media (max-width: 560px) {
+        .intro h1 { font-size: 1.45rem; }
+        .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .card-art { height: 70px; }
+        .card-art svg { width: 40px; height: 40px; }
+        .panel, .guide, .web-panel { padding: 16px; }
+        .site-links { grid-template-columns: 1fr 1fr; }
+        .site-link .s-note { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-main" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M30 6c6 1 10 6 10 12 0 7-6 12-13 12-3 0-6-1-8-3L12 20c-2-3-1-7 2-10C17 7 24 5 30 6Z"></path>
+          <path d="M19 27l-4 4c-2 2-5 2-6 0-1-1-1-3 1-5l4-3"></path>
+          <path d="M10 26l-3 3M15 31l-3 3"></path>
+        </g>
+      </symbol>
+      <symbol id="i-side" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 42C24 30 24 18 30 6c8 2 12 8 12 15 0 10-8 17-18 21Z"></path>
+          <path d="M24 42C24 32 20 24 10 20c-4 8 1 17 14 22Z"></path>
+          <path d="M24 42V26"></path>
+        </g>
+      </symbol>
+      <symbol id="i-soup" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 22h36c0 9-7 16-16 16h-4C13 38 6 31 6 22Z"></path>
+          <path d="M4 22h40"></path>
+          <path d="M17 14c0-3 3-3 3-6M27 14c0-3 3-3 3-6"></path>
+          <path d="M14 44h20"></path>
+        </g>
+      </symbol>
+      <symbol id="i-rice" viewBox="0 0 48 48">
+        <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 24h32c0 8-6 14-14 14h-4C14 38 8 32 8 24Z"></path>
+          <path d="M12 24c1-6 6-10 12-10s11 4 12 10"></path>
+          <path d="M30 6l8 10M38 4L42 14"></path>
+          <path d="M16 44h16"></path>
+        </g>
+      </symbol>
+      <symbol id="i-dice" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+          <circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"></circle>
+          <circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"></circle>
+          <circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"></circle>
+          <circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"></circle>
+        </g>
+      </symbol>
+      <symbol id="i-dl" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v11M7 11l5 5 5-5M4 20h16"></path>
+        </g>
+      </symbol>
+      <symbol id="i-ext" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 4h6v6M20 4l-9 9M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"></path>
+        </g>
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.8-3.8"></path>
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="wrap">
+      <section class="intro">
+        <h1>冷蔵庫の食材から、<span class="accent">今日の一品</span>を決めよう</h1>
+        <p>家にある食材を選ぶと、その食材で作れるレシピが見つかります。全24品、高タンパクや時短などの条件でも絞り込めます。さらに、選んだ食材や料理名のままクックパッドやクラシルなど外部のレシピサイトでも検索できるので、このアプリにないレシピも探せます。迷ったときは「おまかせ」ボタンで1品決めることもできます。</p>
+        <div class="intro-actions">
+          <button class="btn primary" id="randomBtn" type="button"><svg><use href="#i-dice"></use></svg>おまかせで1品決める</button>
+          <button class="btn" id="dlTopBtn" type="button"><svg><use href="#i-dl"></use></svg>index.htmlをダウンロード</button>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="レシピを探す">
+        <h2>食材で探す</h2>
+        <p class="hint">家にある食材をタップすると、その食材を使うレシピが上に来ます。複数選ぶと、多く一致する順に並びます。</p>
+        <div class="search-row">
+          <div class="search-box">
+            <svg><use href="#i-search"></use></svg>
+            <input type="search" id="searchInput" placeholder="料理名・食材で検索（例：鮭、味噌汁）" aria-label="料理名・食材で検索">
+          </div>
+        </div>
+        <div class="chips" id="ingChips" role="group" aria-label="食材を選ぶ"></div>
+        <p class="cond-label">条件で絞る</p>
+        <div class="chips" id="condChips" role="group" aria-label="条件で絞る">
+          <button class="chip cond" type="button" data-cond="protein" aria-pressed="false">高タンパク（25g以上）</button>
+          <button class="chip cond" type="button" data-cond="quick" aria-pressed="false">15分以内</button>
+          <button class="chip cond" type="button" data-cond="keep" aria-pressed="false">作り置きOK</button>
+        </div>
+      </section>
+
+      <section class="web-panel" aria-label="外部のレシピサイトで探す">
+        <h2>レシピサイトでも探す</h2>
+        <p class="hint">このアプリにないレシピは、外部のレシピサイトでも探せます。選んだ食材と検索ワードがそのまま各サイトの検索キーワードになります。リンクを押すと、検索結果が新しいタブで開きます。</p>
+        <p class="web-kw" id="webKw"></p>
+        <div class="site-links" id="webLinks"></div>
+      </section>
+
+      <div class="tabs" role="tablist" aria-label="カテゴリ" id="catTabs">
+        <button class="tab" role="tab" type="button" data-cat="all" aria-selected="true">すべて</button>
+        <button class="tab" role="tab" type="button" data-cat="主菜" aria-selected="false">主菜</button>
+        <button class="tab" role="tab" type="button" data-cat="副菜" aria-selected="false">副菜</button>
+        <button class="tab" role="tab" type="button" data-cat="汁物" aria-selected="false">汁物</button>
+        <button class="tab" role="tab" type="button" data-cat="ごはんもの" aria-selected="false">ごはんもの</button>
+      </div>
+
+      <div class="result-line">
+        <span class="count" id="resultCount"></span>
+        <button class="clear-btn" id="clearBtn" type="button">条件をすべてクリア</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="emptyState" hidden="">
+        <p>条件に合うレシピが見つかりませんでした</p>
+        食材や条件を減らして、もう一度探してみてください。
+        <p class="ext-head">同じキーワードで、外部のレシピサイトでも探せます</p>
+        <div class="site-links" id="emptyLinks"></div>
+      </div>
+
+      <section class="guide" id="github">
+        <h2>このページをGitHubで公開する手順</h2>
+        <p>このページは、画像もプログラムもすべて1つのHTMLファイルに収まっています。下のボタンで <code>index.html</code> をダウンロードしてGitHubに置けば、GitHub Pagesで誰でも開けるURLが発行されます。ビルド作業は不要です。</p>
+        <ol>
+          <li>下のボタンから <code>index.html</code> をダウンロードする（ついでに <code>README.md</code> も用意しています）</li>
+          <li>GitHubで新しいリポジトリを作る（公開範囲は Public を選ぶ）</li>
+          <li>リポジトリの画面で「Add file」→「Upload files」を選び、<code>index.html</code> をアップロードしてコミットする</li>
+          <li>リポジトリの「Settings」→「Pages」を開き、Branch で <code>main</code> ／ <code>/(root)</code> を選んで「Save」</li>
+          <li>数分待つと <code>https://（ユーザー名）.github.io/（リポジトリ名）/</code> で公開されます</li>
+        </ol>
+        <div class="dl-row">
+          <button class="btn primary" id="dlHtmlBtn" type="button"><svg><use href="#i-dl"></use></svg>index.html をダウンロード</button>
+          <button class="btn" id="dlReadmeBtn" type="button"><svg><use href="#i-dl"></use></svg>README.md をダウンロード</button>
+        </div>
+      </section>
+
+      <footer>レシピはすべて2人分です。タンパク質・カロリーは1人分の目安です。</footer>
+    </div>
+
+    <dialog id="recipeDialog" aria-labelledby="dlgTitle">
+      <div class="dlg-head">
+        <h3 id="dlgTitle"></h3>
+        <button class="dlg-close" id="dlgClose" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div class="dlg-body" id="dlgBody"></div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      // GitHub配布用: 画面が書き換わる前の、このページ自身のHTMLを控えておく
+      var PRISTINE_HTML = "<!doctype html>\n" + document.documentElement.outerHTML;
+
+      var INGREDIENTS = ["鶏むね肉","鶏もも肉","豚肉","牛肉","ひき肉","鮭","サバ","ツナ缶","卵","豆腐","厚揚げ","玉ねぎ","キャベツ","にんじん","じゃがいも","ごぼう","ほうれん草","ブロッコリー","ピーマン","なす","トマト","もやし","きのこ","わかめ"];
+
+      var RECIPES = [
+        { name:"鶏むね肉の照り焼きチキン", cat:"主菜", time:15, protein:34, kcal:330, keep:false,
       .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
       .chip {
         min-height: 38px; padding: 5px 14px; border-radius: 999px;
