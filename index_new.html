@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ja"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="冷蔵庫にある食材から今日の献立を探せる、共有用のレシピ集。収録レシピに加えて、クックパッドやクラシルなど外部のレシピサイトでも同じ食材・料理名で検索できます。単一HTMLファイルなのでGitHub Pagesでそのまま公開できます。">
+    <link rel="icon" href="data:,">
+    <title>レシピを考える（共有版）</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2rem; }
+    </style>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --panel: #f4f8f3;
+        --panel-2: #eef3ec;
+        --ink: #22302a;
+        --ink-soft: #55645c;
+        --line: #dce5da;
+        --accent: #d9481c;
+        --accent-ink: #b93a14;
+        --accent-soft: #fdeee7;
+        --green: #2e7d4f;
+        --green-soft: #e6f2e9;
+        --gold: #a86e00;
+        --gold-soft: #fdf3dd;
+        --blue: #2563a8;
+        --blue-soft: #e8f1fa;
+        --shadow: 0 2px 10px rgba(34, 48, 42, .08);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141a16;
+          --panel: #1c241e;
+          --panel-2: #232d26;
+          --ink: #eef3ee;
+          --ink-soft: #a9b8ae;
+          --line: #33413a;
+          --accent: #ff8a5c;
+          --accent-ink: #ffa582;
+          --accent-soft: #3a241a;
+          --green: #7bc796;
+          --green-soft: #1e3325;
+          --gold: #e8b84b;
+          --gold-soft: #38300f;
+          --blue: #7db3e8;
+          --blue-soft: #1d2f42;
+          --shadow: 0 2px 10px rgba(0, 0, 0, .35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px 64px; }
+      h1, h2, h3, .maru { font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif; }
+
+      /* ---------- intro ---------- */
+      .intro { padding: 28px 0 6px; }
+      .intro h1 { font-size: 1.7rem; font-weight: 900; margin: 0 0 6px; letter-spacing: .02em; }
+      .intro h1 .accent { color: var(--accent); }
+      .intro p { margin: 0; color: var(--ink-soft); font-size: .95rem; max-width: 40em; }
+      .intro-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        min-height: 44px; padding: 8px 18px;
+        border-radius: 999px; border: 1px solid var(--line);
+        background: var(--panel); color: var(--ink);
+        font: inherit; font-weight: 700; font-size: .92rem;
+        cursor: pointer; text-decoration: none;
+      }
+      .btn:hover { border-color: var(--green); }
+      .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      @media (prefers-color-scheme: dark) { .btn.primary { color: #1c1005; } }
+      .btn.primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+      .btn svg { width: 18px; height: 18px; flex: none; }
+
+      /* ---------- filter panel ---------- */
+      .panel {
+        margin-top: 22px; background: var(--panel);
+        border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 18px;
+      }
+      .panel h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 900; }
+      .panel .hint { margin: 0 0 12px; font-size: .83rem; color: var(--ink-soft); }
+      .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .search-box { position: relative; flex: 1 1 240px; }
+      .search-box svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--ink-soft); pointer-events: none; }
+      .search-box input {
+        width: 100%; min-height: 44px; padding: 8px 12px 8px 38px;
+        border-radius: 10px; border: 1px solid var(--line);
+        background: var(--bg); color: var(--ink); font: inherit; font-size: .95rem;
+      }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+      .chip {
+        min-height: 38px; padding: 5px 14px; border-radius: 999px;
+        border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+        font: inherit; font-size: .88rem; font-weight: 500; cursor: pointer;
+      }
+      .chip:hover { border-color: var(--green); }
+      .chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; font-weight: 700; }
+      @media (prefers-color-scheme: dark) { .chip[aria-pressed="true"] { color: #0e1a11; } }
+      .chip.cond[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+      @media (prefers-color-scheme: dark) { .chip.cond[aria-pressed="true"] { color: #1c1005; } }
+      .cond-label { margin: 16px 0 0; font-size: .83rem; font-weight: 700; color: var(--ink-soft); }
+
+      /* ---------- external recipe sites ---------- */
+      .web-panel { margin-top: 16px; background: var(--blue-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+      .web-panel h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 900; }
+      .web-panel .hint { margin: 0 0 10px; font-size: .83rem; color: var(--ink-soft); }
+      .web-kw { margin: 0 0 12px; font-size: .9rem; }
+      .web-kw b { color: var(--blue); }
+      .site-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+      .site-link {
+        display: flex; align-items: center; gap: 10px; min-height: 52px;
+        background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+        padding: 10px 12px; text-decoration: none; color: var(--ink);
+      }
+      .site-link:hover { border-color: var(--blue); }
+      .site-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .site-link .s-name { display: block; font-weight: 700; font-size: .92rem; line-height: 1.35; }
+      .site-link .s-note { display: block; font-size: .74rem; color: var(--ink-soft); line-height: 1.45; }
+      .site-link svg { width: 16px; height: 16px; flex: none; margin-left: auto; color: var(--blue); }
+      .empty .site-links { margin-top: 14px; text-align: left; }
+      .empty .ext-head { margin: 18px 0 0; font-weight: 700; color: var(--ink); font-size: .92rem; }
+      .dlg-sites { display: flex; flex-wrap: wrap; gap: 8px; }
+      .dlg-sites a {
+        display: inline-flex; align-items: center; gap: 6px; min-height: 38px;
+        padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line);
+        background: var(--panel); color: var(--ink); font-size: .88rem; font-weight: 700; text-decoration: none;
+      }
+      .dlg-sites a:hover { border-color: var(--blue); }
+      .dlg-sites a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .dlg-sites svg { width: 13px; height: 13px; color: var(--blue); }
+
+      /* ---------- category tabs ---------- */
+      .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px; border-bottom: 2px solid var(--line); }
+      .tab {
+        min-height: 44px; padding: 8px 16px; border: none; background: none;
+        font: inherit; font-size: .98rem; font-weight: 700; color: var(--ink-soft);
+        cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px;
+      }
+      .tab[aria-selected="true"] { color: var(--accent-ink); border-bottom-color: var(--accent); }
+      .result-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 16px 2px 12px; }
+      .result-line .count { font-weight: 700; font-size: .95rem; }
+      .result-line .count b { color: var(--accent-ink); font-size: 1.15rem; }
+      .clear-btn { background: none; border: none; color: var(--blue); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; min-height: 36px; padding: 4px 8px; }
+
+      /* ---------- recipe cards ---------- */
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+      .card {
+        background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+        overflow: hidden; cursor: pointer; text-align: left; font: inherit; color: inherit;
+        padding: 0; width: 100%; box-shadow: var(--shadow);
+        display: flex; flex-direction: column;
+      }
+      .card:hover { border-color: var(--green); }
+      .card:focus-visible, .btn:focus-visible, .chip:focus-visible, .tab:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+      .card-art { height: 92px; display: flex; align-items: center; justify-content: center; position: relative; }
+      .card-art svg { width: 52px; height: 52px; }
+      .art-main { background: var(--accent-soft); color: var(--accent); }
+      .art-side { background: var(--green-soft); color: var(--green); }
+      .art-soup { background: var(--gold-soft); color: var(--gold); }
+      .art-rice { background: var(--blue-soft); color: var(--blue); }
+      .match-badge {
+        position: absolute; top: 8px; right: 8px;
+        background: var(--green); color: #fff; font-size: .72rem; font-weight: 700;
+        padding: 2px 9px; border-radius: 999px;
+      }
+      @media (prefers-color-scheme: dark) { .match-badge { color: #0e1a11; } }
+      .card-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+      .card h3 { margin: 0; font-size: 1.02rem; font-weight: 900; line-height: 1.4; }
+      .card .desc { margin: 0; font-size: .82rem; color: var(--ink-soft); line-height: 1.55; }
+      .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+      .meta span { font-size: .74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--panel-2); color: var(--ink-soft); }
+      .meta span.protein { background: var(--accent-soft); color: var(--accent-ink); }
+      .meta span.keep { background: var(--green-soft); color: var(--green); }
+      .empty { text-align: center; padding: 44px 16px; color: var(--ink-soft); border: 1px dashed var(--line); border-radius: var(--radius); }
+      .empty p { margin: 0 0 6px; font-weight: 700; color: var(--ink); }
+
+      /* ---------- dialog ---------- */
+      dialog {
+        border: 1px solid var(--line); border-radius: 18px; padding: 0;
+        background: var(--bg); color: var(--ink);
+        width: min(620px, calc(100vw - 24px)); max-height: 88vh;
+      }
+      dialog::backdrop { background: rgba(10, 16, 12, .55); }
+      .dlg-head { padding: 20px 22px 0; display: flex; gap: 12px; align-items: flex-start; }
+      .dlg-head h3 { margin: 0; font-size: 1.3rem; font-weight: 900; line-height: 1.4; flex: 1; }
+      .dlg-close { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-size: 1.1rem; cursor: pointer; line-height: 1; }
+      .dlg-body { padding: 12px 22px 24px; overflow-y: auto; }
+      .dlg-body .desc { color: var(--ink-soft); font-size: .9rem; margin: 0 0 12px; }
+      .dlg-body h4 { font-family: "Zen Maru Gothic", sans-serif; margin: 18px 0 8px; font-size: 1rem; }
+      .ing-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
